@@ -1,7 +1,7 @@
 const moment = require("moment");
+const fs = require("fs");
 
 var param, width = 500;
-const prefix = "https://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
 const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
 
@@ -16,7 +16,25 @@ function getBGOffset() {
     return offset[getBG()];
 }
 
-function getSocial() {
+function readImage(url) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(url, 'binary' , (err, body) => {
+            if (!err) resolve('data:image/png;base64,' + Buffer.from(body, 'binary').toString('base64'));
+            else reject(err);
+        });
+    });
+}
+
+function readSVG(url) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(url, 'utf-8' , (err, body) => {
+            if (!err) resolve('data:image/svg+xml;base64,' + Buffer.from(body).toString('base64'));
+            else reject(err);
+        });
+    });
+}
+
+async function getSocial() {
     var can = [];
     var ret = "";
 
@@ -36,7 +54,7 @@ function getSocial() {
     for (var i = 0; i < can.length; i++) {
         ret += `
         <g class="item">
-            <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="${prefix}/res/icon/${can[i]}.svg"/>
+            <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="${await readSVG(`res/icon/${can[i]}.svg`)}"/>
             <text class="text" transform="translate(370 ${margin + 12 + sp * i + sp / 2 - 16})">${param.get(can[i])}</text>
         </g>`;
     }
@@ -60,15 +78,15 @@ function getStr() {
     return "一个特殊日期";
 }
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
     moment.locale("zh-cn");
     param = new URLSearchParams(req.url.split("/api")[1]);
 
     res.setHeader("Content-Type", "image/svg+xml");
     const {
-        background = `${prefix}/res/bg/${getBG()}.png`,
+        background = await readImage(`res/bg/${getBG()}.png`),
         bg_offset = 250 - getBGOffset(),
-        socialText = getSocial(),
+        socialText = await getSocial(),
         dayOfYear = moment().dayOfYear(),
         year = moment().year(),
         month = moment().format('M'),
@@ -76,20 +94,20 @@ module.exports = (req, res) => {
         weekday = moment().format('dddd'),
         toStr = getStr(),
         toDur = getDur(),
-        quote = param.get("quote") || "✨✨"
+        quote = param.get("quote") || "✨✨",
+        fontColor = param.get("color") || "#333"
     } = req.query;
 
     res.send(`
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} 180">
     <defs>
         <style>
-            svg { background-color: #fff; }
-            #image .line { fill: none; stroke: #555; stroke-miterlimit: 10; stroke-width: 0.5px; stroke-linecap: round; }
+            #image .line { fill: none; stroke: ${fontColor}; opacity: .7; stroke-miterlimit: 10; stroke-width: 0.5px; stroke-linecap: round; }
             #image .bg { width: 200px; height: 250px; }
             #detail .text { font-size: 12px; font-weight: lighter; }
             #contact .item .icon { width: 16px; height: 16px; }
-            #contact .item .text { font-size: 10px; fill: #333; font-weight: lighter; }
-            #quote .text { font-size: 10px; fill: #333; font-weight: lighter;}
+            #contact .item .text { font-size: 10px; fill: ${fontColor}; font-weight: lighter; }
+            #quote .text { font-size: 10px; fill: ${fontColor}; font-weight: lighter; }
         </style>
     </defs>
     <title>Postcard | Xecades</title>
