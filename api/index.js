@@ -2,7 +2,7 @@ const moment = require("moment");
 const request = require("request");
 const fs = require("fs");
 
-var param, width = 500;
+var param, width = 460;
 const prefix = "http://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
 const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
@@ -79,6 +79,20 @@ function getStr() {
     return "一个特殊日期";
 }
 
+function getWeekday() {
+    var ret = "";
+    switch (+moment().format("d")) {
+        case 0: ret = "星期日"; break;
+        case 1: ret = "星期一"; break;
+        case 2: ret = "星期二"; break;
+        case 3: ret = "星期三"; break;
+        case 4: ret = "星期四"; break;
+        case 5: ret = "星期五"; break;
+        case 6: ret = "星期六"; break;
+    }
+    return ret;
+}
+
 module.exports = async (req, res) => {
     moment.locale("zh-cn");
     param = new URLSearchParams(req.url.split("/api")[1]);
@@ -92,11 +106,11 @@ module.exports = async (req, res) => {
         year = moment().year(),
         month = moment().format('M'),
         day = moment().format('D'),
-        weekday = moment.weekdays(+moment().format("d")),
+        weekday = getWeekday(),
         toStr = getStr(),
         toDur = getDur(),
         quote = param.get("quote") || "✨✨",
-        fontColor = param.get("color") || "#333"
+        fontColor = "#" + (param.get("color") || "333")
     } = req.query;
 
     res.send(`
@@ -105,7 +119,7 @@ module.exports = async (req, res) => {
         <style>
             #image .line { fill: none; stroke: ${fontColor}; opacity: .7; stroke-miterlimit: 10; stroke-width: 0.5px; stroke-linecap: round; }
             #image .bg { height: 250px; }
-            #detail .text { font-size: 12px; font-weight: lighter; }
+            #detail .text { font-size: 12px; fill: ${fontColor}; font-weight: lighter; }
             #contact .item .icon { width: 16px; height: 16px; }
             #contact .item .text { font-size: 10px; fill: ${fontColor}; font-weight: lighter; }
             #quote .text { font-size: 10px; fill: ${fontColor}; font-weight: lighter; }
