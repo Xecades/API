@@ -57,9 +57,9 @@ alipay, bilibili, codepen, csdn, douban, email, facebook, github, google, pixiv,
 举个栗子：
 
 ```
-![](https://api.xecades.xyz/api?github=Xecades&codepen=Xecades&email=i@xecades.xyz&google=Xecades&qq=2135174618)
+![](https://api.xecades.xyz/api?bg=fff&github=Xecades&codepen=Xecades&email=i@xecades.xyz&google=Xecades&qq=2135174618)
 ```
 
-![](https://api.xecades.xyz/api?github=Xecades&codepen=Xecades&email=i@xecades.xyz&google=Xecades&qq=2135174618)
+![](https://api.xecades.xyz/api?bg=fff&github=Xecades&codepen=Xecades&email=i@xecades.xyz&google=Xecades&qq=2135174618)
 
 > 理论上可以设定任意数量个社交账号，但为了最佳视觉效果，推荐设置 5 个或 0 个。设置为 0 个时会自动隐藏空白区域
