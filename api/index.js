@@ -1,6 +1,7 @@
 const moment = require("moment");
 
 var param, width = 500;
+const prefix = "https://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
 const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
 
@@ -35,7 +36,7 @@ function getSocial() {
     for (var i = 0; i < can.length; i++) {
         ret += `
         <g class="item">
-            <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="/res/icon/${can[i]}.svg"/>
+            <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="${prefix}/res/icon/${can[i]}.svg"/>
             <text class="text" transform="translate(370 ${margin + 12 + sp * i + sp / 2 - 16})">${param.get(can[i])}</text>
         </g>`;
     }
@@ -65,7 +66,7 @@ module.exports = (req, res) => {
 
     res.setHeader("Content-Type", "image/svg+xml");
     const {
-        background = `/res/bg/${getBG()}.png`,
+        background = `${prefix}/res/bg/${getBG()}.png`,
         bg_offset = 250 - getBGOffset(),
         socialText = getSocial(),
         dayOfYear = moment().dayOfYear(),
