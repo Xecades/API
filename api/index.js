@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-var param;
+var param, width = 500;
 const offset = [0, 0, 4.8, 2.7];
 const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
 
@@ -24,7 +24,10 @@ function getSocial() {
             can.push(key);
     }
 
-    if (can.length == 0) return "";
+    if (can.length == 0) {
+        width = 320;
+        return "";
+    }
 
     var margin = 40;
     var sp = (170 - margin) / can.length;
@@ -47,6 +50,15 @@ function getDur() {
     return -moment().diff(date, 'd');
 }
 
+function getStr() {
+    var date = param.get("date") || "";
+    if (!moment(date).isValid())
+        return ` ${moment().year()} 年末`;
+    if (param.get("str"))
+        return param.get("str");
+    return "一个特殊日期";
+}
+
 module.exports = (req, res) => {
     moment.locale("zh-cn");
     param = new URLSearchParams(req.url.split("/api")[1]);
@@ -58,16 +70,16 @@ module.exports = (req, res) => {
         socialText = getSocial(),
         dayOfYear = moment().dayOfYear(),
         year = moment().year(),
-        month = moment().month(),
-        day = moment().day(),
+        month = moment().format('M'),
+        day = moment().format('D'),
         weekday = moment().format('dddd'),
-        toStr = param.get("str") || "年末",
+        toStr = getStr(),
         toDur = getDur(),
         quote = param.get("quote") || "✨✨"
     } = req.query;
 
     res.send(`
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 530 180">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} 180">
     <defs>
         <style>
             svg { background-color: #fff; }
@@ -89,7 +101,7 @@ module.exports = (req, res) => {
     <g id="detail">
         <text class="text" transform="translate(20 35)">欢迎您朋友 🎉</text>
         <text class="text" transform="translate(20 65)">今天是 ${month} 月 ${day} 日，${weekday}</text>
-        <text class="text" transform="translate(20 95)">是 ${year} 年的第 ${dayOfYear} 天</text>
+        <text class="text" transform="translate(20 95)">也是 ${year} 年的第 ${dayOfYear} 天</text>
         <text class="text" transform="translate(20 125)">距离${toStr}还有 ${toDur} 天</text>
         <text class="text" transform="translate(20 155)">${quote}</text>
     </g>
