@@ -1,7 +1,9 @@
 const moment = require("moment");
+const request = require("request");
 const fs = require("fs");
 
 var param, width = 500;
+const prefix = "http://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
 const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
 
@@ -18,8 +20,8 @@ function getBGOffset() {
 
 function readImage(url) {
     return new Promise((resolve, reject) => {
-        fs.readFile(url, 'binary' , (err, body) => {
-            if (!err) resolve('data:image/png;base64,' + Buffer.from(body, 'binary').toString('base64'));
+        request({url: url, encoding: "binary"}, function (err, resp, body) {
+            if (!err && resp.statusCode == 200) resolve('data:image/png;base64,' + Buffer.from(body, 'binary').toString('base64'));
             else reject(err);
         });
     });
@@ -27,8 +29,8 @@ function readImage(url) {
 
 function readSVG(url) {
     return new Promise((resolve, reject) => {
-        fs.readFile(url, 'utf-8' , (err, body) => {
-            if (!err) resolve('data:image/svg+xml;base64,' + Buffer.from(body).toString('base64'));
+        request(url, function (err, resp, body) {
+            if (!err && resp.statusCode == 200) resolve('data:image/svg+xml;base64,' + Buffer.from(body, 'utf8').toString('base64'));
             else reject(err);
         });
     });
@@ -38,10 +40,9 @@ async function getSocial() {
     var can = [];
     var ret = "";
 
-    for (var key of param.keys()) {
+    for (var key of param.keys())
         if (icons.includes(key))
             can.push(key);
-    }
 
     if (can.length == 0) {
         width = 320;
@@ -54,7 +55,7 @@ async function getSocial() {
     for (var i = 0; i < can.length; i++) {
         ret += `
         <g class="item">
-            <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="${await readSVG(`res/icon/${can[i]}.svg`)}"/>
+            <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="${await readSVG(`${prefix}/res/icon/${can[i]}.svg`)}"/>
             <text class="text" transform="translate(370 ${margin + 12 + sp * i + sp / 2 - 16})">${param.get(can[i])}</text>
         </g>`;
     }
@@ -84,14 +85,14 @@ module.exports = async (req, res) => {
 
     res.setHeader("Content-Type", "image/svg+xml");
     const {
-        background = await readImage(`res/bg/${getBG()}.png`),
+        background = await readImage(`${prefix}/res/bg/${getBG()}.png`),
         bg_offset = 250 - getBGOffset(),
         socialText = await getSocial(),
         dayOfYear = moment().dayOfYear(),
         year = moment().year(),
         month = moment().format('M'),
         day = moment().format('D'),
-        weekday = moment().format('dddd'),
+        weekday = moment.weekdays(+moment().format("d")),
         toStr = getStr(),
         toDur = getDur(),
         quote = param.get("quote") || "✨✨",
@@ -103,7 +104,7 @@ module.exports = async (req, res) => {
     <defs>
         <style>
             #image .line { fill: none; stroke: ${fontColor}; opacity: .7; stroke-miterlimit: 10; stroke-width: 0.5px; stroke-linecap: round; }
-            #image .bg { width: 200px; height: 250px; }
+            #image .bg { height: 250px; }
             #detail .text { font-size: 12px; font-weight: lighter; }
             #contact .item .icon { width: 16px; height: 16px; }
             #contact .item .text { font-size: 10px; fill: ${fontColor}; font-weight: lighter; }

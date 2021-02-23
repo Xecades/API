@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "ip": "^1.1.5",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "request": "^2.88.2"
   },
   "devDependencies": {},
   "scripts": {
