@@ -13,10 +13,10 @@
 举个栗子：
 
 ```
-![](https://api.xecades.xyz/api?color=777&github=Xecades&zhihu=@Xecades&qq=2135174618&email=i@xecades.xyz&bg=1&date=2021-06-07&str=%202021%20年高考&quote=加油啊%20✨)
+![](https://api.xecades.xyz/api?color=777&bg=fff&img=1&date=2021-06-07&str=%202021%20年高考&quote=加油啊%20✨&github=Xecades&zhihu=@Xecades&qq=2135174618&email=i@xecades.xyz)
 ```
 
-![](https://api.xecades.xyz/api?color=777&github=Xecades&zhihu=@Xecades&qq=2135174618&email=i@xecades.xyz&bg=1&date=2021-06-07&str=%202021%20年高考&quote=加油啊%20✨)
+![](https://api.xecades.xyz/api?color=777&bg=fff&img=1&date=2021-06-07&str=%202021%20年高考&quote=加油啊%20✨&github=Xecades&zhihu=@Xecades&qq=2135174618&email=i@xecades.xyz)
 
 这个例子包含了所有可以使用的参数，下面是详解.
 
@@ -38,8 +38,9 @@ https://api.xecades.xyz/api
 
 | key | 含义 | 可选值 | 默认值 | 在之前例子中的值 |
 | - | - | - | - | - |
-| bg | 选择背景图片 | 1, 2, 3 | 1 | 1 |
+| img | 选择背景图片 | 1, 2, 3 | 1 | 1 |
 | color | 文字的颜色（十六进制，**去掉前缀 "#"**） | 十六进制颜色 | 333333 | 777 |
+| bg | 背景的颜色（十六进制，**去掉前缀 "#"**） | 十六进制颜色 | 透明 | fff |
 | date | “距离 xxx 还有 xxx 天” 对应的日期（**前置 0 不能省略**） | yyyy-mm-dd | 2021-12-31 | 2021-06-07 |
 | str | “距离 xxx 还有……” 中的 xxx（**空格应替换为 `%20`**） | 文本 | 2021 年末 | 2021 年高考 |
 | quote | “距离 xxx 还有……” 下面的文字（**空格应替换为 `%20`**） | 文本 | ✨✨ | 加油啊 ✨ |

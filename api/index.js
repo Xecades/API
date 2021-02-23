@@ -9,8 +9,8 @@ const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "face
 
 function getBG() {
     var ret = 1;
-    if (param.get("bg") && +param.get("bg") >= 1 && +param.get("bg") <= 3)
-        ret = +param.get("bg");
+    if (param.get("img") && +param.get("img") >= 1 && +param.get("img") <= 3)
+        ret = +param.get("img");
     return ret;
 }
 
@@ -110,13 +110,15 @@ module.exports = async (req, res) => {
         toStr = getStr(),
         toDur = getDur(),
         quote = param.get("quote") || "✨✨",
-        fontColor = "#" + (param.get("color") || "333")
+        fontColor = "#" + (param.get("color") || "333"),
+        bgColor = "#" + (param.get("bg") || "")
     } = req.query;
 
     res.send(`
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} 180">
     <defs>
         <style>
+            svg {background-color: ${bgColor}; }
             #image .line { fill: none; stroke: ${fontColor}; opacity: .7; stroke-miterlimit: 10; stroke-width: 0.5px; stroke-linecap: round; }
             #image .bg { height: 250px; }
             #detail .text { font-size: 12px; fill: ${fontColor}; font-weight: lighter; }
