@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 530 180">
+    <defs>
+        <style>
+        svg {
+            background-color: #fff;
+        }
+
+        #image .line {
+            fill: none;
+            stroke: #555;
+            stroke-miterlimit: 10;
+            stroke-width: 0.5px;
+            stroke-linecap: round;
+        }
+
+        #image .bg {
+            width: 200px;
+            height: 250px;
+        }
+
+        #detail .text {
+            font-size: 12px;
+            font-weight: lighter;
+        }
+
+        #contact .item .icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        #contact .item .text {
+            font-size: 10px;
+            fill: #333;
+            font-weight: lighter;
+        }
+
+        #quote .text {
+            font-size: 10px;
+            fill: #333;
+            font-weight: lighter;
+        }
+        </style>
+    </defs>
+    <title>Postcard | Xecades</title>
+
+    <g id="image">
+        <line class="line" x1="250.5" y1="20" x2="250.5" y2="170"/>
+        <image class="bg" transform="translate(250 32) scale(0.5)" href="/res/bg/1.png"/>
+    </g>
+
+    <g id="detail">
+        <text class="text" transform="translate(20 35)">欢迎您来自地球的朋友</text>
+        <text class="text" transform="translate(20 65)">今天是 2077 年 2 月 31 日 星期八</text>
+        <text class="text" transform="translate(20 95)">您的 IP 是 127.0.0.1</text>
+        <text class="text" transform="translate(20 125)">您使用的是 Windows 2000 操作系统</text>
+        <text class="text" transform="translate(20 155)">您使用的是 IE (0.0.1) 浏览器 </text>
+    </g>
+
+    <g id="contact">
+        <g class="item">
+            <image class="icon" transform="translate(350 20)" href="/res/logo/github.svg"/>
+            <text class="text" transform="translate(370 32)">Text1</text>
+        </g>
+        <g class="item">
+            <image class="icon" transform="translate(350 45)" href="/res/logo/bilibili.svg"/>
+            <text class="text" transform="translate(370 57)">Text2</text>
+        </g>
+        <g class="item">
+            <image class="icon" transform="translate(350 70)" href="/res/logo/zhihu.svg"/>
+            <text class="text" transform="translate(370 82)">Text3</text>
+        </g>
+        <g class="item">
+            <image class="icon" transform="translate(350 95)" href="/res/logo/qq.svg"/>
+            <text class="text" transform="translate(370 107)">Text4</text>
+        </g>
+    </g>
+
+    <g id="quote">
+        <text class="text" transform="translate(350 135)">Line1</text>
+        <text class="text" transform="translate(350 155)">Line2</text>
+    </g>
+</svg>
