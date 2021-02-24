@@ -2,7 +2,7 @@ const moment = require("moment");
 const request = require("request");
 const fs = require("fs");
 
-var param, width = 460;
+var param;
 const prefix = "http://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
 const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
@@ -44,11 +44,6 @@ async function getSocial() {
         if (icons.includes(key))
             can.push(key);
 
-    if (can.length == 0) {
-        width = 320;
-        return "";
-    }
-
     var margin = 40;
     var sp = (170 - margin) / can.length;
 
@@ -65,18 +60,20 @@ async function getSocial() {
 
 function getDur() {
     var date = param.get("date") || "";
-    if (!moment(date).isValid())
+    if (date == "")
         date = `${moment().year()}-12-31`;
-    return -moment().diff(date, 'd');
+    var ret = -moment().diff(date, 'd')
+    if (ret >= 0) return `还有 ${ret} 天`;
+    else return `已经过去 ${-ret} 天`;
 }
 
 function getStr() {
     var date = param.get("date") || "";
-    if (!moment(date).isValid())
-        return ` ${moment().year()} 年末`;
     if (param.get("str"))
         return param.get("str");
-    return "一个特殊日期";
+    if (date == "")
+        return ` ${moment().year()} 年末`;
+    return "某个特殊日期";
 }
 
 function getWeekday() {
@@ -100,22 +97,22 @@ module.exports = async (req, res) => {
     res.setHeader("Content-Type", "image/svg+xml");
     const {
         background = await readImage(`${prefix}/res/bg/${getBG()}.png`),
-        bg_offset = 250 - getBGOffset(),
+        bg_offset  = 250 - getBGOffset(),
         socialText = await getSocial(),
-        dayOfYear = moment().dayOfYear(),
-        year = moment().year(),
-        month = moment().format('M'),
-        day = moment().format('D'),
-        weekday = getWeekday(),
-        toStr = getStr(),
-        toDur = getDur(),
-        quote = param.get("quote") || "✨✨",
-        fontColor = "#" + (param.get("color") || "333"),
-        bgColor = "#" + (param.get("bg") || "")
+        dayOfYear  = moment().dayOfYear(),
+        year       = moment().year(),
+        month      = moment().format('M'),
+        day        = moment().format('D'),
+        weekday    = getWeekday(),
+        toStr      = getStr(),
+        toDur      = getDur(),
+        quote      = param.get("quote") || "✨✨",
+        fontColor  = "rgba(" + (param.get("color") || "51,51,51,1") + ")",
+        bgColor    = "rgba(" + (param.get("bg") || "0,0,0,0") + ")"
     } = req.query;
 
     res.send(`
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${width} 180">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 460 180">
     <defs>
         <style>
             svg {background-color: ${bgColor}; }
@@ -138,7 +135,7 @@ module.exports = async (req, res) => {
         <text class="text" transform="translate(20 35)">欢迎您朋友 🎉</text>
         <text class="text" transform="translate(20 65)">今天是 ${month} 月 ${day} 日，${weekday}</text>
         <text class="text" transform="translate(20 95)">也是 ${year} 年的第 ${dayOfYear} 天</text>
-        <text class="text" transform="translate(20 125)">距离${toStr}还有 ${toDur} 天</text>
+        <text class="text" transform="translate(20 125)">距离${toStr}${toDur}</text>
         <text class="text" transform="translate(20 155)">${quote}</text>
     </g>
     
