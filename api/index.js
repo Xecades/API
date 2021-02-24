@@ -35,7 +35,6 @@ function getParam(str) {
 }
 
 function trans(text) {
-    console.log(text);
     if (text)
         return text
             .replace(/{%amp%}/gm, "&amp;")
