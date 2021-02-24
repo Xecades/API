@@ -6,6 +6,11 @@
         "source han serif", "simsun", songti sc, microsoft yahei, serif;
 }
 
+::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+}
+
 html,
 body {
     height: 100%;
