@@ -86,7 +86,10 @@ var vm = new Vue({
         setParam(key, value) {
             var tmp = new URLSearchParams(vm.params);
             if (!value) tmp.delete(key);
-            else tmp.set(key, value);
+            else tmp.set(key, value
+                .replace(/\&/gm, "{%amp%}")
+                .replace(/\</gm, "{%lt%}")
+                .replace(/\>/gm, "{%gt%}"));
             vm.params = tmp.toString();
         },
 

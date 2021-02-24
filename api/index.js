@@ -30,10 +30,24 @@ const icons = [
     "juejin"
 ];
 
+function getParam(str) {
+    return trans(param.get(str));
+}
+
+function trans(text) {
+    console.log(text);
+    if (text)
+        return text
+            .replace(/{%amp%}/gm, "&amp;")
+            .replace(/{%lt%}/gm, "&lt;")
+            .replace(/{%gt%}/gm, "&gt;")
+    return text;
+}
+
 function getBG() {
     var ret = 1;
-    if (param.get("img") && +param.get("img") >= 1 && +param.get("img") <= 3)
-        ret = +param.get("img");
+    if (getParam("img") && +getParam("img") >= 1 && +getParam("img") <= 3)
+        ret = +getParam("img");
     return ret;
 }
 
@@ -74,7 +88,7 @@ async function getSocial() {
         ret += `
         <g class="item">
             <image class="icon" transform="translate(350 ${margin + sp * i + sp / 2 - 16})" href="${await readSVG(`${prefix}/res/icon/${can[i]}.svg`)}"/>
-            <text class="text" transform="translate(370 ${margin + 12 + sp * i + sp / 2 - 16})">${param.get(can[i])}</text>
+            <text class="text" transform="translate(370 ${margin + 12 + sp * i + sp / 2 - 16})">${getParam(can[i])}</text>
         </g>`;
     }
 
@@ -82,7 +96,7 @@ async function getSocial() {
 }
 
 function getDur() {
-    var date = param.get("date") || "";
+    var date = getParam("date") || "";
     if (date == "")
         date = `${moment().year()}-12-31`;
     var ret = -moment().diff(date, 'd')
@@ -91,9 +105,9 @@ function getDur() {
 }
 
 function getStr() {
-    var date = param.get("date") || "";
-    if (param.get("str"))
-        return param.get("str");
+    var date = getParam("date") || "";
+    if (getParam("str"))
+        return getParam("str");
     if (date == "")
         return ` ${moment().year()} 年末`;
     return "某个特殊日期";
@@ -132,9 +146,9 @@ module.exports = async (req, res) => {
         weekday    = getWeekday(),
         toStr      = getStr(),
         toDur      = getDur(),
-        quote      = param.get("quote") || "✨✨",
-        fontColor  = "rgba(" + (param.get("color") || "51,51,51,1") + ")",
-        bgColor    = "rgba(" + (param.get("bg") || "0,0,0,0") + ")"
+        quote_     = getParam("quote") || "✨✨",
+        fontColor  = "rgba(" + (getParam("color") || "51,51,51,1") + ")",
+        bgColor    = "rgba(" + (getParam("bg") || "0,0,0,0") + ")"
     } = req.query;
 
     res.send(`
@@ -162,7 +176,7 @@ module.exports = async (req, res) => {
         <text class="text" transform="translate(20 65)">今天是 ${month} 月 ${day} 日，${weekday}</text>
         <text class="text" transform="translate(20 95)">也是 ${year} 年的第 ${dayOfYear} 天</text>
         <text class="text" transform="translate(20 125)">距离${toStr}${toDur}</text>
-        <text class="text" transform="translate(20 155)">${quote}</text>
+        <text class="text" transform="translate(20 155)">${quote_}</text>
     </g>
     
     <g id="contact">${socialText}</g>
