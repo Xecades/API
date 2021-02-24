@@ -12,7 +12,7 @@
 
 <body>
     <div id="app">
-        <el-image class="image" :src="image" @click="open">
+        <el-image class="image" :src="image" @click="open" @load="CURSOR.refresh();">
             <div class="placeholder" slot="placeholder">加载中...</div>
         </el-image>
 
@@ -76,6 +76,7 @@
     </a>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.11.1/lib/index.js"></script>
+    <script src="cursor.js"></script>
     <script src="script.js"></script>
     <script src="mobile.js"></script>
 </body>
