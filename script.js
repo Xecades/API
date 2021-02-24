@@ -1,22 +1,27 @@
 const baseURL = "https://api.xecades.xyz/api";
 const icons = [
+    "site",
+    "email",
+    "qq",
+    "zhihu",
+    "github",
+    "wechat",
+    "luogu",
+    "codeforces",
+    "codepen",
+    "google",
     "alipay",
     "bilibili",
-    "codepen",
     "csdn",
     "douban",
-    "email",
     "facebook",
-    "github",
-    "google",
     "pixiv",
-    "qq",
     "quora",
     "taobao",
     "twitter",
-    "wechat",
     "weibo",
-    "zhihu",
+    "jianshu",
+    "juejin"
 ];
 
 function toggleBorder() {

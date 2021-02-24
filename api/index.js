@@ -5,7 +5,30 @@ const fs = require("fs");
 var param;
 const prefix = "http://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
-const icons = ["alipay", "bilibili", "codepen", "csdn", "douban", "email", "facebook", "github", "google", "pixiv", "qq", "quora", "taobao", "twitter", "wechat", "weibo", "zhihu"];
+const icons = [
+    "site",
+    "email",
+    "qq",
+    "zhihu",
+    "github",
+    "wechat",
+    "luogu",
+    "codeforces",
+    "codepen",
+    "google",
+    "alipay",
+    "bilibili",
+    "csdn",
+    "douban",
+    "facebook",
+    "pixiv",
+    "quora",
+    "taobao",
+    "twitter",
+    "weibo",
+    "jianshu",
+    "juejin"
+];
 
 function getBG() {
     var ret = 1;
@@ -91,6 +114,9 @@ function getWeekday() {
 }
 
 module.exports = async (req, res) => {
+    if (!req.url.includes("Xecades"))
+        console.log("[Running] " + req.url);
+
     moment.locale("zh-cn");
     param = new URLSearchParams(req.url.split("/api")[1]);
 
@@ -112,7 +138,7 @@ module.exports = async (req, res) => {
     } = req.query;
 
     res.send(`
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 460 180">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 180">
     <defs>
         <style>
             svg {background-color: ${bgColor}; }
