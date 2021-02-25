@@ -128,7 +128,7 @@ function getWeekday() {
 
 module.exports = async (req, res) => {
     if (!req.url.includes("Xecades"))
-        console.log("[Running] " + req.url);
+        console.log("[Running] " + decodeURI(req.url));
 
     moment.locale("zh-cn");
     param = new URLSearchParams(req.url.split("/api")[1]);
