@@ -88,6 +88,31 @@ body {
     width: calc(100% + 127px);
 }
 
+.counter {
+    text-align: center;
+    margin-top: 10px;
+    color: #999;
+    font-size: 14px;
+}
+
+.copyright {
+    text-align: center;
+    margin: 4px 0;
+    color: #999;
+    font-size: 14px;
+}
+
+.copyright a {
+    text-decoration: none;
+    font-weight: bold;
+    color: unset;
+    transition: opacity .2s;
+}
+
+.copyright a:hover {
+    opacity: .5;
+}
+
 .github-corner:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
 }
