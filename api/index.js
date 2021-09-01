@@ -1,33 +1,34 @@
-const moment = require("moment");
-const request = require("request");
-const fs = require("fs");
+import moment, { locale } from "moment";
+import request from "request";
 
 var param;
 const prefix = "http://api.xecades.xyz";
 const offset = [0, 0, 4.8, 2.7];
 const icons = [
-    "site",
-    "email",
-    "qq",
-    "zhihu",
-    "github",
-    "wechat",
-    "luogu",
-    "codeforces",
-    "codepen",
-    "google",
     "alipay",
     "bilibili",
+    "codeforces",
+    "codepen",
     "csdn",
     "douban",
+    "email",
     "facebook",
+    "github",
+    "google",
+    "jianshu",
+    "juejin",
+    "libreoj",
+    "luogu",
     "pixiv",
+    "qq",
     "quora",
+    "site",
     "taobao",
     "twitter",
+    "uva",
+    "wechat",
     "weibo",
-    "jianshu",
-    "juejin"
+    "zhihu",
 ];
 
 function getParam(str) {
@@ -126,11 +127,13 @@ function getWeekday() {
     return ret;
 }
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
     if (!req.url.includes("Xecades"))
         console.log("[Running] " + decodeURI(req.url));
+    else
+        console.log("[Running] [With 'Xecades'] " + decodeURI(req.url));
 
-    moment.locale("zh-cn");
+    locale("zh-cn");
     param = new URLSearchParams(req.url.split("/api")[1]);
 
     res.setHeader("Content-Type", "image/svg+xml");

@@ -6,6 +6,7 @@
   "dependencies": {
     "ip": "^1.1.5",
     "moment": "^2.29.1",
+    "pino-logflare": "^0.3.7",
     "request": "^2.88.2"
   },
   "devDependencies": {},
